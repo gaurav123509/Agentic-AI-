@@ -1,6 +1,12 @@
-import mongoose from "mongoose";
-
-import Email from "../models/Email.js";
+import { isDatabaseConnected } from "../config/db.js";
+import {
+  countEmails,
+  createEmailRecord,
+  findEmailById,
+  isValidEmailId,
+  listEmails,
+  updateEmailRecord,
+} from "../models/Email.js";
 import { buildEmptyCalendarEvent } from "../utils/analysisNormalizer.js";
 import AppError from "../utils/appError.js";
 import { executeStoredAction } from "./action.service.js";
@@ -8,10 +14,10 @@ import { analyzeEmailWithAI } from "./ai.service.js";
 import { detectPriority, getPrioritySignals } from "./priority.service.js";
 
 const ensureDatabaseConnection = () => {
-  if (mongoose.connection.readyState !== 1) {
+  if (!isDatabaseConnected()) {
     throw new AppError(
       503,
-      "Database is not connected yet. Please try again once MongoDB is available."
+      "Database is not connected yet. Please try again once MySQL is available."
     );
   }
 };
@@ -27,7 +33,7 @@ export const analyzeAndStoreEmail = async ({ subject = "", body = "" }) => {
     priority,
   });
 
-  const savedEmail = await Email.create({
+  const savedEmail = await createEmailRecord({
     subject,
     body,
     summary: analysis.summary,
@@ -44,6 +50,7 @@ export const analyzeAndStoreEmail = async ({ subject = "", body = "" }) => {
     aiModel: analysis.aiModel,
     openaiResponseId: analysis.openaiResponseId,
     tokenUsage: analysis.tokenUsage,
+    executedActions: [],
   });
 
   return savedEmail;
@@ -52,11 +59,11 @@ export const analyzeAndStoreEmail = async ({ subject = "", body = "" }) => {
 export const executeEmailActionById = async ({ emailId, actionType, payload = {} }) => {
   ensureDatabaseConnection();
 
-  if (!mongoose.isValidObjectId(emailId)) {
+  if (!isValidEmailId(emailId)) {
     throw new AppError(400, "Invalid emailId");
   }
 
-  const email = await Email.findById(emailId);
+  const email = await findEmailById(emailId);
 
   if (!email) {
     throw new AppError(404, "Email not found");
@@ -66,6 +73,7 @@ export const executeEmailActionById = async ({ emailId, actionType, payload = {}
     email,
     actionType,
     payload,
+    saveEmail: updateEmailRecord,
   });
 };
 
@@ -74,16 +82,12 @@ export const fetchEmailHistory = async (query = {}) => {
 
   const page = Math.max(Number.parseInt(query.page, 10) || 1, 1);
   const limit = Math.min(Math.max(Number.parseInt(query.limit, 10) || 10, 1), 100);
-  const skip = (page - 1) * limit;
-  const filter = {};
-
-  if (query.priority) {
-    filter.priority = query.priority;
-  }
+  const offset = (page - 1) * limit;
+  const priority = typeof query.priority === "string" ? query.priority.trim() : "";
 
   const [emails, total] = await Promise.all([
-    Email.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
-    Email.countDocuments(filter),
+    listEmails({ priority, limit, offset }),
+    countEmails({ priority }),
   ]);
 
   return {

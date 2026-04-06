@@ -4,13 +4,16 @@
   "version": "1.0.0",
   "description": "MailPilot AI monorepo wrapper for deployment platforms.",
   "workspaces": [
-    "backend"
+    "backend",
+    "frontend"
   ],
   "scripts": {
     "start": "node backend/server.js",
     "dev": "npm --prefix backend run dev",
     "backend:start": "npm --prefix backend start",
-    "backend:dev": "npm --prefix backend run dev"
+    "backend:dev": "npm --prefix backend run dev",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build"
   },
   "engines": {
     "node": "20.x"

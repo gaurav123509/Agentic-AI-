@@ -11,7 +11,7 @@ services:
         value: production
       - key: OPENAI_API_KEY
         sync: false
-      - key: MONGODB_URI
+      - key: MYSQL_URL
         sync: false
       - key: CLIENT_URL
         sync: false

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-import connectDB from "./config/db.js";
+import connectDB, { isDatabaseConnected } from "./config/db.js";
 import { env } from "./config/env.js";
 import emailRoutes from "./routes/email.routes.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
@@ -48,10 +48,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/health", (req, res) => {
-  res.status(200).json({
+  const databaseStatus = isDatabaseConnected() ? "connected" : "disconnected";
+
+  res.status(isDatabaseConnected() ? 200 : 503).json({
     success: true,
     service: "MailPilot AI",
     environment: env.nodeEnv,
+    database: databaseStatus,
     timestamp: new Date().toISOString(),
   });
 });

@@ -1,13 +1,13 @@
 # MailPilot AI
 
-MailPilot AI is a production-ready AI email triage backend built with Node.js, Express.js, MongoDB, Mongoose, dotenv, cors, and the OpenAI API.
+MailPilot AI is a production-ready AI email triage backend built with Node.js, Express.js, MySQL, dotenv, cors, and the OpenAI API.
 
 ## Features
 
 - Analyze incoming emails using `subject` and `body`
 - Classify priority as `Urgent`, `Requires Action`, or `FYI`
 - Generate a draft reply, task list, and calendar event suggestion
-- Save every analyzed email in MongoDB
+- Save every analyzed email in MySQL
 - Execute actions against saved email records
 - View paginated email history
 
@@ -26,6 +26,26 @@ cp .env.example .env
 npm run dev
 ```
 
+## Frontend
+
+The repository also includes a production-ready React + Tailwind frontend in [frontend](/Users/gauravtripathi/agentic%20ai%20e-mailer/frontend).
+
+```bash
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Frontend highlights:
+
+- React functional components with hooks
+- Tailwind CSS responsive UI
+- Axios API layer with separate base URL config
+- Landing page, dashboard, about, and contact routes
+- Loading, error, empty, and success states
+- Cards, charts, and history tables for backend data
+
 ## Deploy On Render
 
 This repository includes a [render.yaml](/Users/gauravtripathi/agentic%20ai%20e-mailer/render.yaml) blueprint for deployment.
@@ -38,7 +58,7 @@ This repository includes a [render.yaml](/Users/gauravtripathi/agentic%20ai%20e-
 
 Required environment variables on Render:
 
-- `MONGODB_URI`
+- `MYSQL_URL`
 - `OPENAI_API_KEY`
 - `CLIENT_URL`
 - `OPENAI_MODEL`

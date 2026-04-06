@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply min-h-screen bg-paper bg-[radial-gradient(circle_at_top_left,_rgba(239,108,87,0.10),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(188,200,255,0.26),_transparent_28%),linear-gradient(180deg,_#f5efe4_0%,_#fbf7f0_100%)] font-body text-ink;
+}
+
+#root {
+  @apply min-h-screen;
+}
+
+::selection {
+  @apply bg-coral text-white;
+}
+
+@layer components {
+  .section-shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .card-surface {
+    @apply rounded-[28px] border border-white/70 bg-white/80 shadow-soft backdrop-blur-sm;
+  }
+
+  .nav-link {
+    @apply rounded-full px-4 py-2 text-sm font-semibold text-ink/70 transition hover:bg-white hover:text-ink;
+  }
+
+  .nav-link-active {
+    @apply bg-white text-ink shadow-soft;
+  }
+
+  .badge-pill {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em];
+  }
+}

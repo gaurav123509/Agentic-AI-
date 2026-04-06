@@ -154,9 +154,9 @@ const normalizeActionType = (actionType = "") => {
   return value;
 };
 
-const getPlainObject = (value) => (value?.toObject ? value.toObject() : value);
+const getPlainObject = (value) => value;
 
-export const executeStoredAction = async ({ email, actionType, payload = {} }) => {
+export const executeStoredAction = async ({ email, actionType, payload = {}, saveEmail }) => {
   const normalizedActionType = normalizeActionType(actionType);
 
   switch (normalizedActionType) {
@@ -176,7 +176,7 @@ export const executeStoredAction = async ({ email, actionType, payload = {} }) =
         executedAt: new Date(),
       });
 
-      await email.save();
+      await saveEmail(email);
 
       return {
         emailId: email.id,
@@ -209,7 +209,7 @@ export const executeStoredAction = async ({ email, actionType, payload = {} }) =
         executedAt: new Date(),
       });
 
-      await email.save();
+      await saveEmail(email);
 
       return {
         emailId: email.id,
@@ -245,7 +245,7 @@ export const executeStoredAction = async ({ email, actionType, payload = {} }) =
         executedAt: new Date(),
       });
 
-      await email.save();
+      await saveEmail(email);
 
       return {
         emailId: email.id,
