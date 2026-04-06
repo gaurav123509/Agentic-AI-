@@ -26,6 +26,24 @@ cp .env.example .env
 npm run dev
 ```
 
+## Deploy On Render
+
+This repository includes a [render.yaml](/Users/gauravtripathi/agentic%20ai%20e-mailer/render.yaml) blueprint for deployment.
+
+- Runtime: `Node`
+- Root Directory: `backend`
+- Build Command: `npm install`
+- Start Command: `npm start`
+- Health Check Path: `/health`
+
+Required environment variables on Render:
+
+- `MONGODB_URI`
+- `OPENAI_API_KEY`
+- `CLIENT_URL`
+- `OPENAI_MODEL`
+- `OPENAI_REASONING_EFFORT`
+
 ## API Endpoints
 
 - `GET /`

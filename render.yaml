@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: mailpilot-ai
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-5.4-mini
+      - key: OPENAI_REASONING_EFFORT
+        value: low
+      - key: DB_RETRY_DELAY_MS
+        value: 5000

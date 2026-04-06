@@ -9,7 +9,7 @@
     "dev": "nodemon --legacy-watch --watch server.js --watch config --watch controllers --watch middleware --watch models --watch routes --watch services --watch utils server.js"
   },
   "engines": {
-    "node": ">=18.18.0"
+    "node": "20.x"
   },
   "keywords": [
     "mailpilot-ai",
